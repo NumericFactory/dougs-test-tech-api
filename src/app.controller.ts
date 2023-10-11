@@ -1,11 +1,15 @@
 import { Controller, Get } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller()
 export class AppController {
 
+    @ApiTags('Home page HTML')
     @Get()
     MovementApiWelcome() {
         return `
+        <!-- THIS THE HOME PAGE HTML -->
+        <!-- GO TO localhost:3000/api -->
         <style>
         body { font-family: Arial, Helvetica, sans-serif; }
         .container { width: 720px; height: 100vh; margin: 0 auto;}

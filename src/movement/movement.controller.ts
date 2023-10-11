@@ -1,8 +1,9 @@
 import { Body, Query, Controller, Post, Get, HttpException, HttpStatus, HttpCode } from '@nestjs/common';
 import { MovementService } from './movement.service';
 import { Movement } from './models/data.model';
-import { ApiResponse, ApiTags, ApiOkResponse, ApiOperation, ApiAcceptedResponse } from '@nestjs/swagger';
-import { Detail, ErrorResponseWithReasons, OkResponse, Reason } from './models/response-with-reasons.model';
+import { ApiResponse, ApiTags, ApiOperation, ApiAcceptedResponse } from '@nestjs/swagger';
+import { ErrorResponseWithReasons, Reason, Detail } from './models/response-with-reasons.model';
+import { OkResponse } from './models/ok-response.model';
 
 @Controller('movements')
 export class MovementController {
@@ -14,8 +15,8 @@ export class MovementController {
      * @param { boolean } withDuplicate  - if we want duplicated entries for each month
      * @returns {Array<Movement[]>} movements - simulated movements from scrapped source
     */
-    @ApiTags('Generate fake movements data')
-    @ApiResponse({ status: 200, description: 'Array of 12 months. Each Month contains a Movement[]' })
+    @ApiTags('Generate fake movements data (for each 12 month)')
+    @ApiResponse({ status: 200, description: 'Array of 12 months. Each Month contains a Movement Array' })
     @ApiResponse({ status: 500, description: 'Server error' })
 
     @Get()
@@ -30,14 +31,13 @@ export class MovementController {
     }
 
 
-
     /**
      * Function that validate syncrhonization of scrapped Movements, by compare with real bank balance
      * @param movements 
      * @returns 
      */
     @ApiTags('validation of synchronisation')
-    @ApiAcceptedResponse({ status: 202, description: 'Accepted' })
+    @ApiAcceptedResponse({ status: 202, description: 'Accepted', type: OkResponse })
     @ApiResponse({ status: 418, description: 'I\'m a teapot', type: ErrorResponseWithReasons })
     @HttpCode(202)
     @Post('validation')
