@@ -29,8 +29,10 @@ export class MovementController {
         return movementsFromSync;
     }
 
+
+
     /**
-     * function that validate syncrhonization of scrapped Movements, by compare with real bank balance
+     * Function that validate syncrhonization of scrapped Movements, by compare with real bank balance
      * @param movements 
      * @returns 
      */
