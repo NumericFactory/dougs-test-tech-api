@@ -1,10 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
 
 @Controller()
 export class AppController {
 
-    @ApiTags('Home page HTML')
+    //@ApiTags('Home page HTML')
+    @ApiExcludeEndpoint(true)
     @Get()
     MovementApiWelcome() {
         return `

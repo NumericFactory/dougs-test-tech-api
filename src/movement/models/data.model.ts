@@ -5,19 +5,19 @@ import { ApiProperty } from "@nestjs/swagger";
 */
 // Type data: Movement
 export class Movement {
-    @ApiProperty()
+    @ApiProperty({ example: 1 })
     id: number;
-    @ApiProperty()
+    @ApiProperty({ example: new Date('2023-10-06 15:30:00') })
     date: Date;
-    @ApiProperty()
+    @ApiProperty({ example: 'Facture client F021234' })
     wording: string;
-    @ApiProperty()
+    @ApiProperty({ example: 1230 })
     amount: number;
 }
 // Type data: BankBalance
 export class BankBalance {
-    @ApiProperty()
+    @ApiProperty({ example: new Date('2023-10-31') })
     date: Date;
-    @ApiProperty()
+    @ApiProperty({ example: 1748.6 })
     balance: number
 }

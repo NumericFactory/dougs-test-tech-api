@@ -18,7 +18,8 @@ export class MovementService {
      * @param {} realBalance 
      * @returns { RemoveDuplicatedReturn }
      */
-    removeDuplicatedEntries(movements: any[], realBalance: { date: Date, balance: number }): RemoveDuplicatedReturn {
+    removeDuplicatedEntries(movements: Movement[], realBalance: { date: Date, balance: number }): RemoveDuplicatedReturn {
+        console.log("mbms", movements)
         let uniqueMovements: Movement[] = [];
         let result = 0;
         // 1. remove duplicated entries
