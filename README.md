@@ -26,11 +26,15 @@ Accéder à la page d'accueil de l'API sur `localhost:3000`
 
 ## Accéder à la documentation de l'API
 `localhost:3000/api`
-[API doc](localhost:3000/api) La documentation API sur Swagger.
 
-### Les endpoints : 
-- `[GET] /movements` (queryParam : withDuplicate - value : true|false)
-- `[POST] /movements/validation` (body : Array<Movement[ ]>, queryParam : filterByMonth - value : 1-12) 
+### Les endpoints :
+1. Retourne un jeu de données de type Movement [], pour chaque mois
+  - `[GET] /movements` (queryParam : withDuplicate - value : true|false)
+
+2. Vérifie et valide un jeu de données de type Movement [], pour un mois précis
+  - `[POST] /movements/validation` (body : Array<Movement[ ]>, queryParam : filterByMonth - value : 1-12) 
+
+[API doc](localhost:3000/api) La documentation API sur Swagger.
 
 ## Test
 ```bash
