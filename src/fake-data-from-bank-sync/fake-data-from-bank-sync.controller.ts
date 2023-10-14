@@ -20,7 +20,7 @@ export class FakeDataFromBankSyncController {
     @Get()
     getFakeData(@Query('withDuplicate') withDuplicate?: boolean): Movement[] {
         let boolStr: any = withDuplicate;
-        let withDuplicateItem: any = boolStr === 'true';
+        let withDuplicateItem: boolean = boolStr === 'true';
         const movementsFromSync: Movement[] = withDuplicateItem
             ? this.fakeDataFromBanSyncSvc.getFakeDataMovementsWithDuplicated()
             : this.fakeDataFromBanSyncSvc.getFakeDataMovements();
