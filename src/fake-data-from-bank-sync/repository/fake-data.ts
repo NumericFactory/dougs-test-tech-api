@@ -1,5 +1,5 @@
 import { fakerFR as faker } from '@faker-js/faker';
-import { Movement } from '../models/data.model';
+import { Movement } from '../../api/movement/models/data.model';
 
 /**********************************************************
  * FUNCTIONS TO GENERATE FAKE DATA

@@ -1,7 +1,7 @@
 import { ValidateNested, IsArray, IsObject, } from "class-validator";
 import { Type } from "class-transformer";
 import { ApiProperty } from "@nestjs/swagger";
-import { Movement } from "../models/data.model";
+import { Movement } from "./data.model";
 /**
  * Type API ErrorResponseWithReasons
  **/

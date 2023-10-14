@@ -1,54 +1,38 @@
 import { Body, Query, Controller, Post, Get, HttpException, HttpStatus, HttpCode } from '@nestjs/common';
 import { MovementService } from './movement.service';
 import { Movement } from './models/data.model';
-import { ApiResponse, ApiTags, ApiOperation, ApiAcceptedResponse, ApiParam, ApiBody } from '@nestjs/swagger';
+import { ApiResponse, ApiTags, ApiOperation, ApiAcceptedResponse, ApiParam, ApiBody, ApiQuery } from '@nestjs/swagger';
 import { ErrorResponseWithReasons, Reason, Detail } from './models/response-with-reasons.model';
 import { OkResponse } from './models/ok-response.model';
+import { MovementsByMonthDto } from './dto/movements-by-month.dto';
 
-@Controller('movements')
+@Controller('api/movements')
 export class MovementController {
 
     constructor(private readonly movementSvc: MovementService) { }
 
     /**
-     * Function that generate fake random movements for each 12 month
-     * @param { boolean } withDuplicate  - if we want duplicated entries for each month
-     * @returns {Array<Movement[]>} movements - simulated movements from scrapped source
-    */
-    @ApiTags('Generate fake movements data (for each 12 month)')
-    @ApiResponse({ status: 200, description: 'Array of 12 months. Each Month contains a Movement Array' })
-    @ApiResponse({ status: 500, description: 'Server error' })
-
-    @Get()
-    getFakeData(@Query('withDuplicate') withDuplicate?: boolean): Array<Movement[]> {
-        console.log(withDuplicate)
-        let boolStr: any = withDuplicate;
-        let withDuplicateItem: any = boolStr === 'true';
-        const movementsFromSync: Array<Movement[]> = withDuplicateItem
-            ? this.movementSvc.getFakeDataMovementsWithDuplicated()
-            : this.movementSvc.getFakeDataMovements();
-        return movementsFromSync;
-    }
-
-
-    /**
-     * Function that validate syncrhonization of scrapped Movements, by compare with real bank balance
+     * Function that validate syncrhonization of scrapped Movements, 
+     * by compare with real bank balance
      * @param movements 
      * @returns OkResponse | ErrorResponseWithReasons
      */
     @ApiTags('validation of synchronisation')
     @ApiAcceptedResponse({ status: 202, description: 'Accepted', type: OkResponse })
     @ApiResponse({ status: 418, description: 'I\'m a teapot', type: ErrorResponseWithReasons })
-    @ApiParam({ name: 'filterByMonth', type: Number, description: 'Month to filter in movements array (1 to 12)' })
+    @ApiQuery({ name: 'filterByMonth', required: false, type: Number, description: 'Month (1 to 12)' })
     @ApiOperation({ summary: 'Validate synchronization of scrapped movements with real bank balance' })
     @HttpCode(202)
+
     @Post('validation')
     validation(
-        @Body() movements: Array<Movement[]>,
-        @Query('filterByMonth') filterByMonth: number,
-    ): OkResponse | ErrorResponseWithReasons {
-        const movementsByMonth = movements[filterByMonth - 1]; // get movements by month in queryParam
-        const computed = this.movementSvc.removeDuplicatedEntries(
+        @Body() movements: MovementsByMonthDto,
+        @Query('filterByMonth') filterByMonth?: number): OkResponse | ErrorResponseWithReasons {
+
+        const movementsByMonth = filterByMonth // get movements by month in queryParam
+            ? movements[filterByMonth - 1]
+            : movements[new Date().getMonth()];
+        const computed = this.movementSvc.removeDuplicateEntries(
             movementsByMonth,
             { date: new Date('2023-10-31'), balance: 1748.6 }
         )

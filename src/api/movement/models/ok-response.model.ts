@@ -6,7 +6,7 @@ import { ApiProperty } from "@nestjs/swagger";
 export class OkResponse {
     @ApiProperty({ example: 'Accepted' })
     message: string;
-    constructor(message) {
+    constructor(message: string) {
         this.message = message;
     }
 }

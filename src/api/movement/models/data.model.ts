@@ -13,6 +13,13 @@ export class Movement {
     wording: string;
     @ApiProperty({ example: 1230 })
     amount: number;
+
+    constructor(id: number, date: Date, wording: string, amount: number) {
+        this.id = id;
+        this.date = date;
+        this.wording = wording;
+        this.amount = amount;
+    }
 }
 // Type data: BankBalance
 export class BankBalance {
