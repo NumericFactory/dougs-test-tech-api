@@ -15,19 +15,20 @@ export class FakeDataFromBankSyncService {
     constructor(private readonly fakeDataRepository: FakeDataRepository) { }
 
     /**
-     * function that return fake random movements for each 12 month
+     * function that return fake random movements without duplicates entries
      * @returns  Movement[]
      */
-    getFakeDataMovements(): Array<Movement[]> {
+    getFakeDataMovements(): Movement[] {
+        console.log('without dup')
         return this.fakeDataRepository.getMovementsFromBankServiceSync()
     }
 
 
     /**
-    * function that return fake random movements for each 12 month with duplicates entries
+    * function that return fake random movements with duplicates entries
     * @returns  Movement[]
     */
-    getFakeDataMovementsWithDuplicated(): Array<Movement[]> {
+    getFakeDataMovementsWithDuplicated(): Movement[] {
         return this.fakeDataRepository.getMovementsWithDuplicateFromBankServiceSync()
     }
 

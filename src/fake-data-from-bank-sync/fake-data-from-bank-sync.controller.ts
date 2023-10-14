@@ -18,11 +18,14 @@ export class FakeDataFromBankSyncController {
     @ApiResponse({ status: 500, description: 'Server error' })
 
     @Get()
-    getFakeData(@Query('withDuplicate') withDuplicate?: boolean): Array<Movement[]> {
+    getFakeData(@Query('withDuplicate') withDuplicate?: boolean): Movement[] {
         console.log(withDuplicate)
+        console.log(typeof (withDuplicate))
         let boolStr: any = withDuplicate;
         let withDuplicateItem: any = boolStr === 'true';
-        const movementsFromSync: Array<Movement[]> = withDuplicateItem
+        console.log(withDuplicateItem)
+        console.log(typeof (withDuplicateItem))
+        const movementsFromSync: Movement[] = withDuplicateItem
             ? this.fakeDataFromBanSyncSvc.getFakeDataMovementsWithDuplicated()
             : this.fakeDataFromBanSyncSvc.getFakeDataMovements();
         return movementsFromSync;
