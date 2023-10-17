@@ -26,9 +26,15 @@ export class Detail {
     removedDuplicatesEntries: number;
     uniqueMovements: Movement[];
     computedBalance: number;
-    constructor(removedDuplicatesEntries: number, uniqueMovements: Movement[], computedBalance: number) {
+    isSyncValid: boolean;
+    constructor(
+        removedDuplicatesEntries: number,
+        uniqueMovements: Movement[],
+        computedBalance: number,
+        isSyncValid: boolean) {
         this.removedDuplicatesEntries = removedDuplicatesEntries;
         this.uniqueMovements = [...uniqueMovements];
         this.computedBalance = computedBalance;
+        this.isSyncValid = isSyncValid;
     }
 }

@@ -1,6 +1,8 @@
 import { fakerFR as faker } from '@faker-js/faker';
 import moment from 'moment';
-import { Movement } from '../../api/movement/models/data.model';
+import { BankBalance, Movement } from '../../api/movement/models/data.model';
+import * as utils from './utils';
+
 
 /**********************************************************
  * FUNCTIONS TO GENERATE FAKE DATA
@@ -9,8 +11,8 @@ import { Movement } from '../../api/movement/models/data.model';
 */
 /**
  * Create a new random movement item
- * @param {number} id: 
- * @param {number} month 
+ * @param {number} id 
+ * @param {Date} date 
  * @returns {Movement} new movement created
  */
 export function createMovementItem(id: number, date: Date): Movement {
@@ -19,13 +21,13 @@ export function createMovementItem(id: number, date: Date): Movement {
     let randomAmountNegative = 0 - parseFloat(faker.finance.amount(150, 350));
     let randomAmount = isPositive ? randomAmountPositive : randomAmountNegative;
     let randomWording = isPositive ? "Facture client payée" : faker.finance.transactionType()
-    return { id: id, date: date, wording: randomWording, amount: randomAmount }
+    return new Movement(id, date, randomWording, randomAmount);
 }
 
 
 /**
  * Function that generate fake random movements for each 12 month
- * rules: 
+ * rules (in above createMovementItem function): 
  * - 3-8 movements per month (random)
  * - 20% of movements are positive (random)
  * - amount between 150-350 if amount is negative
@@ -33,7 +35,7 @@ export function createMovementItem(id: number, date: Date): Movement {
  * @returns {Array<Movement>} 
  */
 export function generateMovements(): Movement[] {
-    const randomDates = generateRandomDates();
+    const randomDates = utils.generateRandomDatesArray('2023-01-01');
     const length = randomDates.length;
     // Create movement items for each date
     const randomMovements = randomDates.map((date, index) => {
@@ -48,54 +50,35 @@ export function generateMovements(): Movement[] {
  * Function that generate fake random movements with 10 duplicate entries
  * @returns {Array<Movement>} 
  */
-export function generateMovementsWithDuplicatesEntries(): Movement[] {
-    let randomMovements = generateMovements();
-    const duplicateMovements = duplicateRandomEntry(randomMovements, 10);
-    randomMovements = [...duplicateMovements, ...randomMovements,];
-    randomMovements.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-    return randomMovements;
-
+export function generateMovementsWithDuplicatesEntries(movements: Movement[]): Movement[] {
+    const duplicateMovements = utils.duplicateRandomEntry(movements, 10);
+    movements = [...duplicateMovements, ...movements,];
+    movements.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    return movements;
 }
-
 
 /**
- * UTILS FUNCTIONS : Returns a random number between min and max
- * - randomIntBtw(min, max) : number
- * - generateRandomDates(startDate) : Date[]
-*/
-function randomIntBtw(min: number, max: number) {
-    return Math.floor(
-        Math.random() * (max - min + 1) + min
-    )
-}
+ * Function that generate bank balance statement, each month at the choosen day, 
+ * from movements Array
+ * @param {Movement[]} movements
+ * @param {number} dayOfTheMonth
+ * @param {number} startingBalance
+ * @returns {BankBalance[]} 
+ */
+export function generateBankStatement(movements: Movement[], dayOfTheMonth?: number, startingBalance?: number): BankBalance[] {
+    let bankStatements = [];
+    let dayOfBankStatement = dayOfTheMonth ? dayOfTheMonth : 6;
+    let startDate = new Date(movements[movements.length - 1].date);
+    let endDate = new Date(movements[0].date);
 
-function generateRandomDates(startDate?: Date) {
-    const start = startDate ? moment(startDate) : moment(new Date('2023-01-01'));
-    const end = moment()
-    const randomDates = [];
-    while (start.isSameOrBefore(end)) {
-        const numOfDatesPerMonth = randomIntBtw(3, 8);
-        for (let i = 0; i < numOfDatesPerMonth; i++) {
-            const randomDate = faker.date.between({ from: Number(start.toDate().setDate(1)), to: Number(start.toDate().setDate(28)) });
-            randomDates.push(randomDate);
-        }
-        start.add(1, 'month');
-    }
-    // sort dates in descending order
-    randomDates.sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
-    return randomDates;
-}
+    let arrayOfDatesBankStatement = utils.getArrayOfDates(startDate, endDate, dayOfBankStatement);
 
-// Function to duplicate a random entry in Array
-function duplicateRandomEntry(data: any[], count: number) {
-    const duplicates = [];
-    for (let i = 0; i < count; i++) {
-        const randomIndex = randomIntBtw(0, data.length - 1);
-        const randomEntry = data[randomIndex];
-        duplicates.push({ ...randomEntry, id: data.length + i + 1 });
+    let startBalance = startingBalance ? startingBalance : 0;
+    for (let i = 0; i < arrayOfDatesBankStatement.length; i++) {
+        let partialMovements = movements.filter(movement => new Date(movement.date).getTime() < new Date(arrayOfDatesBankStatement[i]).getTime());
+        let total = partialMovements.reduce((total, item) => total + item.amount, startBalance);
+        bankStatements.push(new BankBalance(i, arrayOfDatesBankStatement[i], total));
     }
-    return duplicates;
+
+    return bankStatements;
 }
-/**
- * END UTILS FUNCTIONS
-*/

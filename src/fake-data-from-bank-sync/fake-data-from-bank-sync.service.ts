@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Movement } from '../api/movement/models/data.model';
+import { BankBalance, Movement } from '../api/movement/models/data.model';
 import { FakeDataRepository } from './repository/fake-data.repository';
 
 interface RemoveDuplicatedReturn {
@@ -19,18 +19,24 @@ export class FakeDataFromBankSyncService {
      * @returns  Movement[]
      */
     getFakeDataMovements(): Movement[] {
-        console.log('without dup')
         return this.fakeDataRepository.getMovementsFromBankServiceSync()
     }
-
 
     /**
     * function that return fake random movements with duplicates entries
     * @returns  Movement[]
     */
-    getFakeDataMovementsWithDuplicated(): Movement[] {
-        return this.fakeDataRepository.getMovementsWithDuplicateFromBankServiceSync()
+    getFakeDataMovementsWithDuplicated(movements: Movement[]): Movement[] {
+        return this.fakeDataRepository.getMovementsWithDuplicateFromBankServiceSync(movements)
     }
 
+    /**
+     * function that return computed bank statements balance from movements
+     * @param movements 
+     * @returns 
+     */
+    getFakeDataBankStatements(movements: Movement[]): BankBalance[] {
+        return this.fakeDataRepository.generateBankStatementsFromMovements(movements, 6, 0);
+    }
 
 }

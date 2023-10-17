@@ -3,16 +3,15 @@
 // import { Type } from "class-transformer";
 // import { ApiProperty } from "@nestjs/swagger";
 
-import { IsArray, ValidateNested } from "class-validator";
+import { IsArray, IsNotEmpty, ValidateNested } from "class-validator";
 import { Movement } from "../models/data.model";
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 
 // import { generateMovementsWithDuplicatesEntries } from "../data/generate-fake-data";
 
-export class MovementsByMonthDto {
-
-    @ApiProperty({ type: Array<Movement[]> })
+export class MovementsDto {
+    //@ApiProperty({ type: Array<Movement>, isArray: true })
     @Type(() => Movement)
-    items: Array<Movement[]>;
+    movements: Movement[];
 }

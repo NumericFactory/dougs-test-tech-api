@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { MovementsDto } from "../dto/movements-by-month.dto";
 /**************************************
  * TYPE DATA - Movement and BankBalance
  **************************************
@@ -21,10 +22,20 @@ export class Movement {
         this.amount = amount;
     }
 }
+
+
 // Type data: BankBalance
 export class BankBalance {
-    @ApiProperty({ example: new Date('2023-10-31') })
+    @ApiProperty({ example: 1 })
+    id: number;
+    @ApiProperty({ example: new Date('2023-10-06') })
     date: Date;
     @ApiProperty({ example: 1748.6 })
     balance: number
+
+    constructor(id: number, date: Date, balance?: number) {
+        this.id = id;
+        this.date = date;
+        this.balance = balance;
+    }
 }

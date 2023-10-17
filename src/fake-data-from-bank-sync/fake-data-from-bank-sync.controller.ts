@@ -6,7 +6,7 @@ import { Movement } from 'src/api/movement/models/data.model';
 @Controller('getdata-from-bank-sync')
 export class FakeDataFromBankSyncController {
 
-    constructor(private readonly fakeDataFromBanSyncSvc: FakeDataFromBankSyncService) { }
+    constructor(private readonly fakeDataFromBankSyncSvc: FakeDataFromBankSyncService) { }
 
     /**
     * Function that generate fake random movements for each 12 month
@@ -18,13 +18,22 @@ export class FakeDataFromBankSyncController {
     @ApiResponse({ status: 500, description: 'Server error' })
 
     @Get()
-    getFakeData(@Query('withDuplicate') withDuplicate?: boolean): Movement[] {
-        let boolStr: any = withDuplicate;
-        let withDuplicateItem: boolean = boolStr === 'true';
-        const movementsFromSync: Movement[] = withDuplicateItem
-            ? this.fakeDataFromBanSyncSvc.getFakeDataMovementsWithDuplicated()
-            : this.fakeDataFromBanSyncSvc.getFakeDataMovements();
-        return movementsFromSync;
+    getFakeData(@Query('withDuplicate') withDuplicate?: boolean) {
+        const boolStr: any = withDuplicate;
+        const withDuplicateItem: boolean = boolStr === 'true';
+
+        let movementsFromSync: Movement[] = this.fakeDataFromBankSyncSvc.getFakeDataMovements();
+        const bankStatements = this.fakeDataFromBankSyncSvc.getFakeDataBankStatements(movementsFromSync);
+
+        movementsFromSync = withDuplicateItem
+            ? this.fakeDataFromBankSyncSvc.getFakeDataMovementsWithDuplicated(movementsFromSync)
+            : [...movementsFromSync];
+
+        return {
+            movements: movementsFromSync,
+            bankStatements: bankStatements
+        };
     }
+
 
 }

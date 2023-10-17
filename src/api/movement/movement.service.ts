@@ -1,12 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Movement } from './models/data.model';
+import { Detail, Reason } from './models/response-with-reasons.model';
 
-interface RemoveDuplicatedReturn {
-    duplicateEntriesWereCleared: number;
-    uniqueMovements: Movement[];
-    balance: number;
-    isSyncValid: boolean;
-}
+// interface RemoveDuplicatedReturn {
+//     duplicateEntriesWereCleared: number;
+//     uniqueMovements: Movement[];
+//     balance: number;
+//     isSyncValid: boolean;
+// }
 
 @Injectable()
 export class MovementService {
@@ -20,7 +21,7 @@ export class MovementService {
      * @param {} realBalance 
      * @returns { RemoveDuplicatedReturn }
      */
-    removeDuplicateEntries(movements: Movement[], realBalance: { date: Date, balance: number }): RemoveDuplicatedReturn {
+    removeDuplicateEntries(movements: Movement[], realBalance: { date: Date, balance: number }): Detail {
         let uniqueMovements: Movement[] = [];
         let result = 0;
         // 1. remove duplicated entries
@@ -38,13 +39,60 @@ export class MovementService {
         let isSyncValid = result === realBalance.balance;
         console.log('compute', result);
         console.log('balance', realBalance.balance);
-        return {
-            duplicateEntriesWereCleared: movements.length - uniqueMovements.length,
+        console.log('isSyncValid', isSyncValid);
+        let detail: Detail = {
+            removedDuplicatesEntries: movements.length - uniqueMovements.length,
             uniqueMovements: uniqueMovements,
-            balance: result,
+            computedBalance: result,
             isSyncValid: isSyncValid
+
+        };
+
+
+        if (!isSyncValid) {
+            throw new Error() // [418]
+        }
+
+        console.log('detail', detail);
+        return detail;
+    }
+
+
+
+
+    handleErrors(error: Error, info: Detail) {
+
+        let reason!: Reason;
+        const { removedDuplicatesEntries, uniqueMovements, computedBalance, isSyncValid } = info;
+
+        // CAS 2: synchronization is not OK - Reason: Duplicates entries were found and removed
+        if (isSyncValid && removedDuplicatesEntries > 0) {
+            reason = {
+                message: "Duplicates entries were found and removed. Cleared uniqueMovements are in response.info",
+                info: new Detail(removedDuplicatesEntries, uniqueMovements, computedBalance, isSyncValid)
+            }
+            throw new HttpException({ messages: 'I\'m a teapot', reasons: [reason] }, HttpStatus.I_AM_A_TEAPOT); // [418]
+        }
+
+        // CAS 3: synchronization is not OK - Reason: missing one or more entries
+        if (!isSyncValid && removedDuplicatesEntries === 0) {
+            reason = {
+                message: `Missing one more entries. Please compare movements with the bank statement of the month`,
+                info: new Detail(removedDuplicatesEntries, uniqueMovements, computedBalance, isSyncValid)
+            }
+            throw new HttpException({ messages: 'I\'m a teapot', reasons: [reason] }, HttpStatus.I_AM_A_TEAPOT); // [418]
+        }
+
+        // CAS 4: synchronization is not OK - Reason: Duplicated Entries were found and removed. But missing one or more entries
+        if (!isSyncValid && removedDuplicatesEntries > 0) {
+            reason = {
+                message: `Duplicates entries were found and removed. Missing one more entries. Please compare unique movements with the bank statement of the month`,
+                info: new Detail(removedDuplicatesEntries, uniqueMovements, computedBalance, isSyncValid)
+            }
+            throw new HttpException({ messages: 'I\'m a teapot', reasons: [reason] }, HttpStatus.I_AM_A_TEAPOT); // [418]
         }
     }
+
 
 
 

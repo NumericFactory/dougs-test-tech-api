@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Movement } from '../../api/movement/models/data.model';
+import { BankBalance, Movement } from '../../api/movement/models/data.model';
 import * as fakeData from './fake-data';
 
 
@@ -11,8 +11,12 @@ export class FakeDataRepository {
 
     }
 
-    getMovementsWithDuplicateFromBankServiceSync(): Movement[] {
-        return fakeData.generateMovementsWithDuplicatesEntries()
+    getMovementsWithDuplicateFromBankServiceSync(movements: Movement[]): Movement[] {
+        return fakeData.generateMovementsWithDuplicatesEntries(movements)
+    }
+
+    generateBankStatementsFromMovements(movements: Movement[], startDay: number, startBalance: number): BankBalance[] {
+        return fakeData.generateBankStatement(movements, startDay, startBalance);
     }
 
 }
