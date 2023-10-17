@@ -16,7 +16,7 @@ export class FakeDataRepository {
     }
 
     generateBankStatementsFromMovements(movements: Movement[], startDay: number, startBalance: number): BankBalance[] {
-        return fakeData.generateBankStatement(movements, startDay, startBalance);
+        return fakeData.generateBankStatements(movements, startDay, startBalance);
     }
 
 }

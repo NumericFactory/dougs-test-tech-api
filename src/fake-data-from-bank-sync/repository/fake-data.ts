@@ -65,7 +65,7 @@ export function generateMovementsWithDuplicatesEntries(movements: Movement[]): M
  * @param {number} startingBalance
  * @returns {BankBalance[]} 
  */
-export function generateBankStatement(movements: Movement[], dayOfTheMonth?: number, startingBalance?: number): BankBalance[] {
+export function generateBankStatements(movements: Movement[], dayOfTheMonth?: number, startingBalance?: number): BankBalance[] {
     let bankStatements = [];
     let dayOfBankStatement = dayOfTheMonth ? dayOfTheMonth : 6;
     let startDate = new Date(movements[movements.length - 1].date);
