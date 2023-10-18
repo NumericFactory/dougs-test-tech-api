@@ -13,20 +13,27 @@ export function randomIntBtw(min: number, max: number): number {
 }
 
 // Function that generate a random array of many dates/month, between a start date and now
-export function generateRandomDatesArray(startDate?: string): Date[] {
+export function generateRandomDatesArray(startDate?: string, minNumOfDatesPerMonth?: number, maxNumOfDatesPerMonth?: number): Date[] {
     const start = startDate ? moment(new Date(startDate)) : moment(new Date('2023-01-01'));
     const end = moment()
     const randomDates = [];
+
     while (start.isSameOrBefore(end)) {
-        const numOfDatesPerMonth = randomIntBtw(3, 8);
-        for (let i = 0; i < numOfDatesPerMonth; i++) {
+        const numOfDatesPerMonth = randomIntBtw(
+            minNumOfDatesPerMonth ? minNumOfDatesPerMonth : 3,
+            maxNumOfDatesPerMonth ? maxNumOfDatesPerMonth : 8);
+        for (let i = 1; i <= numOfDatesPerMonth; i++) {
+            console.log('start.toDate() exec', start.toDate())
             const randomDate = faker.date.between({ from: Number(start.toDate().setDate(1)), to: Number(start.toDate().setDate(28)) });
             randomDates.push(randomDate);
         }
         start.add(1, 'month');
     }
     // sort dates in descending order
-    randomDates.sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
+    console.log('RandomDates', randomDates)
+    if (randomDates.length > 1) {
+        randomDates.sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
+    }
     return randomDates;
 }
 

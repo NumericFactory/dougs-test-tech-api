@@ -18,8 +18,11 @@ export class FakeDataFromBankSyncService {
      * function that return fake random movements without duplicates entries
      * @returns  Movement[]
      */
-    getFakeDataMovements(): Movement[] {
-        return this.fakeDataRepository.getMovementsFromBankServiceSync()
+    getFakeDataMovements(startDateStr: string, minNumOfDatesPerMonth?: number, maxNumOfDatesPerMonth?: number): Movement[] {
+        return this.fakeDataRepository.getMovementsFromBankServiceSync(
+            startDateStr,
+            minNumOfDatesPerMonth,
+            maxNumOfDatesPerMonth)
     }
 
     /**
@@ -29,6 +32,15 @@ export class FakeDataFromBankSyncService {
     getFakeDataMovementsWithDuplicated(movements: Movement[]): Movement[] {
         return this.fakeDataRepository.getMovementsWithDuplicateFromBankServiceSync(movements)
     }
+
+    /**
+    * function that return fake random movements with duplicates entries
+    * @returns  Movement[]
+    */
+    getFakeDataMovementsWithMissing(movements: Movement[], numberEntriesToDelete: number): Movement[] {
+        return this.fakeDataRepository.getMovementsWithMissingFromBankServiceSync(movements, numberEntriesToDelete)
+    }
+
 
     /**
      * function that return computed bank statements balance from movements

@@ -2,6 +2,7 @@ import { fakerFR as faker } from '@faker-js/faker';
 import moment from 'moment';
 import { BankBalance, Movement } from '../../api/movement/models/data.model';
 import * as utils from './utils';
+import { start } from 'repl';
 
 
 /**********************************************************
@@ -34,8 +35,8 @@ export function createMovementItem(id: number, date: Date): Movement {
  * - amount between 990-5500 if amount is positive
  * @returns {Array<Movement>} 
  */
-export function generateMovements(): Movement[] {
-    const randomDates = utils.generateRandomDatesArray('2023-01-01');
+export function generateMovements(startDateStr: string, minNumOfDatesPerMonth?: number, maxNumOfDatesPerMonth?: number): Movement[] {
+    const randomDates = utils.generateRandomDatesArray(startDateStr, minNumOfDatesPerMonth, maxNumOfDatesPerMonth);
     const length = randomDates.length;
     // Create movement items for each date
     const randomMovements = randomDates.map((date, index) => {
@@ -51,9 +52,21 @@ export function generateMovements(): Movement[] {
  * @returns {Array<Movement>} 
  */
 export function generateMovementsWithDuplicatesEntries(movements: Movement[]): Movement[] {
-    const duplicateMovements = utils.duplicateRandomEntry(movements, 10);
+    const duplicateMovements = utils.duplicateRandomEntry(movements, 5);
     movements = [...duplicateMovements, ...movements,];
     movements.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    return movements;
+}
+
+/**
+ * Function that generate fake random movements with 3 missing entries
+ * @returns {Array<Movement>} 
+ */
+export function generateMovementsWithMissingEntries(movements: Movement[], numberEntriesToDelete: number): Movement[] {
+    for (let i = 0; i < numberEntriesToDelete; i++) {
+        let randomIndexToDelete = utils.randomIntBtw(0, movements.length - 1);
+        movements.splice(randomIndexToDelete, 1);
+    }
     return movements;
 }
 
@@ -77,7 +90,10 @@ export function generateBankStatements(movements: Movement[], dayOfTheMonth?: nu
     for (let i = 0; i < arrayOfDatesBankStatement.length; i++) {
         let partialMovements = movements.filter(movement => new Date(movement.date).getTime() < new Date(arrayOfDatesBankStatement[i]).getTime());
         let total = partialMovements.reduce((total, item) => total + item.amount, startBalance);
-        bankStatements.push(new BankBalance(i, arrayOfDatesBankStatement[i], total));
+        bankStatements.push(new BankBalance(
+            arrayOfDatesBankStatement.length - i,
+            arrayOfDatesBankStatement[i],
+            total));
     }
 
     return bankStatements;

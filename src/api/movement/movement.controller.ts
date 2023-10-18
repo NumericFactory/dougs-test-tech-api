@@ -1,6 +1,6 @@
 import { Body, Query, Controller, Post, Get, HttpException, HttpStatus, HttpCode } from '@nestjs/common';
 import { MovementService } from './movement.service';
-import { Movement } from './models/data.model';
+import { BankBalance, Movement } from './models/data.model';
 import { ApiResponse, ApiTags, ApiOperation, ApiAcceptedResponse, ApiParam, ApiBody, ApiQuery } from '@nestjs/swagger';
 import { ErrorResponseWithReasons, Reason, Detail } from './models/response-with-reasons.model';
 import { OkResponse } from './models/ok-response.model';
@@ -10,6 +10,21 @@ import { MovementsDto } from './dto/movements-by-month.dto';
 export class MovementController {
 
     constructor(private readonly movementSvc: MovementService) { }
+
+
+
+    @Post('validation/is-sync-valid')
+    isSyncValid(
+        @Body() data: any[],
+    ) {
+        try {
+            this.movementSvc.isSyncValid(data['movements'], data['bankStatements']);
+        }
+        catch (error) {
+            console.log('error isSync', error);
+        }
+    }
+
 
     /**
      * Function that validate synchronization of scrapped Movements, 
@@ -31,7 +46,7 @@ export class MovementController {
         try {
             const computed = this.movementSvc.removeDuplicateEntries(
                 movements, {
-                    date: new Date('2023-10-31'), balance: 45
+                date: new Date('2023-10-31'), balance: 45
             });
             if (computed.isSyncValid && computed.removedDuplicatesEntries === 0) {
                 return new OkResponse('Accepted'); // [202] { message: 'Accepted' }

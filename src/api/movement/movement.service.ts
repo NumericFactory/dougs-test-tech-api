@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Movement } from './models/data.model';
+import { BankBalance, Movement } from './models/data.model';
 import { Detail, Reason } from './models/response-with-reasons.model';
 
 // interface RemoveDuplicatedReturn {
@@ -13,6 +13,28 @@ import { Detail, Reason } from './models/response-with-reasons.model';
 export class MovementService {
 
     constructor() { }
+
+    /**
+     * function that vérify if the synchronization is OK
+     * by comparing the computed sum of amount's movements, with the real balance from bank statement
+     */
+    isSyncValid(movements: Movement[], bankStatements: BankBalance[]): boolean {
+        let startBalance = 0;
+        for (let i = bankStatements.length - 1; i >= 0; i--) {
+            let partialMovements = movements.filter(movement => new Date(movement.date).getTime() < new Date(bankStatements[i].date).getTime());
+            let total = partialMovements.reduce((total, item) => total + item.amount, startBalance);
+            console.log('total', total);
+            console.log('bankStatements[i].balance', bankStatements[i].balance);
+            total = bankStatements[i].balance;
+            console.log('RESET TOTAL', total);
+            // if (total !== bankStatements[i].balance) {
+            //     return false;
+            // }
+            // else 
+
+        }
+        return true;
+    }
 
     /**
      * Function that remove duplicated entries from Movement[] pass in parameters, 
