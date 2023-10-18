@@ -158,7 +158,8 @@ Returns a 202 "Accepted" or a 418 error "I'm a teapot" (with reasons of error)
 
 
 #### Response
-
+- `202 Accepted!` : Api response if syncrhonization is valid
+ 
 
 ### Errors
 

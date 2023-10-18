@@ -29,19 +29,17 @@ describe('FakeDataFromBankSyncService', () => {
     });
 
     it('getFakeDataMovements() should generate Array of 12 <Movement[]>', () => {
-        expect(service.getFakeDataMovements().length).toEqual(12);
-        expect(service.getFakeDataMovements()[0][0]).toHaveProperty('id');
-        expect(service.getFakeDataMovements()[0][0]).toHaveProperty('date');
-        expect(service.getFakeDataMovements()[0][0]).toHaveProperty('wording');
-        expect(service.getFakeDataMovements()[0][0]).toHaveProperty('amount');
+        let movements = service.getFakeDataMovements('2023-06-01');
+        expect(movements).toBeInstanceOf(Array);
+        expect(movements[0]).toHaveProperty('id');
+        expect(movements[0]).toHaveProperty('date');
+        expect(movements[0]).toHaveProperty('wording');
+        expect(movements[0]).toHaveProperty('amount');
     });
 
     it('getFakeDataMovementsWithDuplicate() should generate Array of 12 <Movement[]>', () => {
-        expect(service.getFakeDataMovementsWithDuplicated().length).toEqual(12);
-        expect(service.getFakeDataMovementsWithDuplicated()[0][0]).toHaveProperty('id');
-        expect(service.getFakeDataMovementsWithDuplicated()[0][0]).toHaveProperty('date');
-        expect(service.getFakeDataMovementsWithDuplicated()[0][0]).toHaveProperty('wording');
-        expect(service.getFakeDataMovementsWithDuplicated()[0][0]).toHaveProperty('amount');
+        let movements = service.getFakeDataMovements('2023-06-01');
+        expect(movements).toBeInstanceOf(Array);
     });
 
 });

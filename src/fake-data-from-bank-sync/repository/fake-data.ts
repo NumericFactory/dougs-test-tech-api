@@ -52,7 +52,7 @@ export function generateMovements(startDateStr: string, minNumOfDatesPerMonth?: 
  * @returns {Array<Movement>} 
  */
 export function generateMovementsWithDuplicatesEntries(movements: Movement[]): Movement[] {
-    const duplicateMovements = utils.duplicateRandomEntry(movements, 5);
+    const duplicateMovements = utils.duplicateRandomEntry(movements, 3);
     movements = [...duplicateMovements, ...movements,];
     movements.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     return movements;
@@ -93,7 +93,7 @@ export function generateBankStatements(movements: Movement[], dayOfTheMonth?: nu
         bankStatements.push(new BankBalance(
             arrayOfDatesBankStatement.length - i,
             arrayOfDatesBankStatement[i],
-            total));
+            Math.round(total * 100) / 100));
     }
 
     return bankStatements;
