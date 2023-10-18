@@ -11,17 +11,21 @@ export class MovementController {
 
     constructor(private readonly movementSvc: MovementService) { }
 
-
-
-    @Post('validation/is-sync-valid')
+    @ApiTags('validation of synchronisation')
+    @ApiAcceptedResponse({ status: 202, description: 'Accepted', type: OkResponse })
+    @ApiResponse({ status: 418, description: 'I\'m a teapot', type: ErrorResponseWithReasons })
+    @HttpCode(202)
+    @Post('validation')
     isSyncValid(
         @Body() data: any[],
     ) {
+        console.log('data', data['bankStatements']);
         try {
-            this.movementSvc.isSyncValid(data['movements'], data['bankStatements']);
+            return this.movementSvc.isSyncValid(data['movements'], data['bankStatements']);
         }
         catch (error) {
             console.log('error isSync', error);
+            return error;
         }
     }
 
@@ -39,7 +43,7 @@ export class MovementController {
     @ApiOperation({ summary: 'Validate synchronization of scrapped movements with real bank balance' })
     @HttpCode(202)
 
-    @Post('validation')
+    @Post('validation/remove-duplicates')
     validation(
         @Body() movements: Movement[],
     ): OkResponse | ErrorResponseWithReasons {

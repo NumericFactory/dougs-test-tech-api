@@ -42,7 +42,7 @@ The base URL for all API requests is :
 
 ### Endpoints
 
-#### GET /data-from-sync
+#### `GET /data-from-sync`
 
 Returns a an object of 2 data : 
 - **movements**: Movement [ ]
@@ -67,16 +67,16 @@ if value is TRUE, the api return a Movement [ ] with 5 missing entries
 
 Returns a JSON object with the following properties:
 
-**movements**: An array of  Movement objects, each with the following properties : 
-- `id` the unique identier of the Movement
-- `date` the date of the movement
-- `wording` the label of the movement
-- `amount` : the amount of the movement
+- **movements**: An array of  Movement objects, each with the following properties : 
+  - `id` the unique identier of the Movement
+  - `date` the date of the movement
+  - `wording` the label of the movement
+  - `amount` : the amount of the movement
 
-**bankStatements**: An array of BankStatement object, each with the following properties : 
-- `id` the unique identier of the BankStatement
-- `date` the date of the BankStatement
-- `balance` : the balance of the BankStatement
+- **bankStatements**: An array of BankStatement object, each with the following properties : 
+  - `id` the unique identier of the BankStatement
+  - `date` the date of the BankStatement
+  - `balance` : the balance of the BankStatement
 
 #### Example
 
@@ -118,13 +118,75 @@ JSON
 
 This API uses the following error codes:
 400 Bad Request: The request was malformed or missing required parameters.
+500 Internal Server Error: An unexpected error occurred on the server.
 
 [API doc](localhost:3000/api) Tester l'API sur Swagger.
+
+
+-------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+#### GET /api/validate
+
+Returns a 202 "Accepted" or a 418 error "I'm a teapot" (with reasons of error)
+
+#### BODY Parameters
+
+`movements` (required, Movement[])
+An array of movements
+
+`bankStatements` (required, BankStatement[])
+An array of bank statements
+
+`withMissing` (optional, boolean)
+if value is TRUE, the api return a Movement [ ] with 5 missing entries
+
+### Querystring Parameters
+
+
+
+#### Response
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Test
 ```bash
 # unit tests
 npm run test
 ```
+
+
 
 

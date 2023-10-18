@@ -15,25 +15,29 @@ export class MovementService {
     constructor() { }
 
     /**
-     * function that vérify if the synchronization is OK
-     * by comparing the computed sum of amount's movements, with the real balance from bank statement
+     * function that verify if the synchronization is valid
+     * by comparing the computed sum of amount's movements, with the real balance from bank statement, for each period
      */
-    isSyncValid(movements: Movement[], bankStatements: BankBalance[]): boolean {
+    isSyncValid(movements: Movement[], bankStatements: BankBalance[]): any {
+        let isSyncValid: boolean = false;
         let startBalance = 0;
+        let periods = [];
+
         for (let i = bankStatements.length - 1; i >= 0; i--) {
             let partialMovements = movements.filter(movement => new Date(movement.date).getTime() < new Date(bankStatements[i].date).getTime());
             let total = partialMovements.reduce((total, item) => total + item.amount, startBalance);
-            console.log('total', total);
-            console.log('bankStatements[i].balance', bankStatements[i].balance);
+
+            isSyncValid = total === bankStatements[i].balance ? true : false;
+            periods.push({ date: bankStatements[i].date, isSyncValid: isSyncValid });
+
+            //resync startBalance total with bankStatements[i].balance
             total = bankStatements[i].balance;
-            console.log('RESET TOTAL', total);
-            // if (total !== bankStatements[i].balance) {
-            //     return false;
-            // }
-            // else 
 
         }
-        return true;
+        if (periods.some(period => period.isSyncValid === false)) {
+            throw new HttpException({ messages: 'I\'m a teapot', reasons: periods }, HttpStatus.I_AM_A_TEAPOT); // [418]
+        }
+
     }
 
     /**
