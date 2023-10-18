@@ -120,7 +120,8 @@ This API uses the following error codes:
 - `400 Bad Request`: The request was malformed or missing required parameters.
 - `500 Internal Server Error`: An unexpected error occurred on the server.
 
-[API doc localhost:3000/api](http://localhost:3000/api).
+### Tester l'API sur Swagger
+[localhost:3000/api](http://localhost:3000/api)
 
 
 
@@ -141,25 +142,27 @@ Returns a 202 "Accepted" or a 418 error "I'm a teapot" (with reasons of error)
 #### BODY Parameters
 
 an object with 2 properties : 
-- `movements` (required, Movement[])
-  - An array of movements
+- `movements` (required, Movement[]) An array of movements
 
-- `bankStatements` (required, BankStatement[])
-  - An array of bank statements
+- `bankStatements` (required, BankStatement[]) An array of bank statements
 
 ### Querystring Parameters
-removeDuplicateEntries
+
 `removeDuplicateEntries` (optional, boolean)
 if TRUE, the API removed duplicates movement before, and verify if synchronization is valid
 
-#### Response
-- `202 Accepted!` : Api response if syncrhonization is valid
- 
+#### Example
 
+**Request** :
+POST /api/validation
+
+#### Response
+- `202 {message : Accepted!}` : Api response if syncrhonization is valid
+ 
 ### Errors
 This API uses the following error codes:
 - `418 I'm a teapot!` : Api response if syncrhonization is not valid 
-JSON
+
 
 ```json
 {
@@ -192,20 +195,8 @@ JSON
 - `400 Bad Request`: The request was malformed or missing required parameters.
 - `500 Internal Server Error`: An unexpected error occurred on the server.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+### Tester l'API sur Swagger
+[localhost:3000/api](http://localhost:3000/api)
 
 
 
@@ -214,7 +205,3 @@ JSON
 # unit tests
 npm run test
 ```
-
-
-
-
