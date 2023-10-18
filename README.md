@@ -123,30 +123,24 @@ This API uses the following error codes:
 [API doc localhost:3000/api](http://localhost:3000/api).
 
 
+
+
+
 -------------------
 
 
 
 
 
+### Endpoints 2/2
 
-
-
-
-
-
-
-
-
-
-### Endpoints 1/2
-
-#### `GET /api/validate`
+#### `POST /api/validate`
 
 Returns a 202 "Accepted" or a 418 error "I'm a teapot" (with reasons of error)
 
 #### BODY Parameters
 
+an object with 2 properties : 
 - `movements` (required, Movement[])
   - An array of movements
 
@@ -154,17 +148,47 @@ Returns a 202 "Accepted" or a 418 error "I'm a teapot" (with reasons of error)
   - An array of bank statements
 
 ### Querystring Parameters
-
-
+removeDuplicateEntries
+`removeDuplicateEntries` (optional, boolean)
+if TRUE, the API removed duplicates movement before, and verify if synchronization is valid
 
 #### Response
 - `202 Accepted!` : Api response if syncrhonization is valid
  
 
 ### Errors
-
 This API uses the following error codes:
 - `418 I'm a teapot!` : Api response if syncrhonization is not valid 
+JSON
+
+```json
+{
+  "response": {
+    "message": "i'm a teapot",
+    "reasons": [
+      {
+        "date": "2023-10-06T21:59:59.999Z",
+        "isSyncValid": true,
+        "isduplicateEntriesFound": false,
+        "isMissingEntries": false
+      },
+      {
+        "date": "2023-09-06T21:59:59.999Z",
+        "isSyncValid": false,
+        "isduplicateEntriesFound": true,
+        "isMissingEntries": false
+      },
+      {
+        "date": "2023-08-06T21:59:59.999Z",
+        "isSyncValid": false,
+        "isduplicateEntriesFound": false,
+        "isMissingEntries": true
+      }
+    ]
+  }
+}
+```
+
 - `400 Bad Request`: The request was malformed or missing required parameters.
 - `500 Internal Server Error`: An unexpected error occurred on the server.
 

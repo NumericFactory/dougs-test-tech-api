@@ -1,6 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { BankBalance, Movement } from './models/data.model';
-import { Detail, Reason } from './models/response-with-reasons.model';
 
 interface ResponseReason {
     date: Date;
@@ -98,7 +97,8 @@ export class MovementService {
 
 
     /**
-     * Function that remove duplicate entries from Movement[] pass in parameters
+     * Function that remove duplicate entries 
+     * from Movement[] pass in parameters
      *  
      * @param {Array<Movement>} movements
      * @returns { RemoveDuplicatedReturn }

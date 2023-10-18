@@ -16,7 +16,10 @@ export class MovementController {
     @HttpCode(202)
 
     @Post('validation')
-    isSyncValid(@Body() data: { movements: Movement[], bankStatements: BankBalance[] }) {
+    isSyncValid(
+        @Body() data: { movements: Movement[], bankStatements: BankBalance[] },
+        @Query('removeDuplicateEntries') removeDuplicateEntries: boolean
+    ) {
         try {
             return this.movementSvc.isSyncValid(data['movements'], data['bankStatements']);
         }
