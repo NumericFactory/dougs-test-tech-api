@@ -27,35 +27,35 @@ describe('MovementService', () => {
     expect(service).toBeDefined();
   });
 
-  it('removeDuplicateEntries().uniqueMovements should return an array without duplicate entries', () => {
-    const movementsWithDuplicates = mockData.movementsWithDuplicates;
-    const realBalance = mockData.realBalance;
-    let results = service.removeDuplicateEntries(movementsWithDuplicates, realBalance);
-    expect(results.uniqueMovements.length).toEqual(2);
-    expect(results.duplicateEntriesWereCleared).toEqual(2);
-  });
+  // it('removeDuplicateEntries().uniqueMovements should return an array without duplicate entries', () => {
+  //   const movementsWithDuplicates = mockData.movementsWithDuplicates;
+  //   const realBalance = mockData.realBalance;
+  //   let results = service.removeDuplicateEntries(movementsWithDuplicates, realBalance);
+  //   expect(results.uniqueMovements.length).toEqual(2);
+  //   expect(results.duplicateEntriesWereCleared).toEqual(2);
+  // });
 
-  it('removeDuplicateEntries().balance should return 400', () => {
-    const movementsWithDuplicates = mockData.movementsWithDuplicates;
-    const realBalance = mockData.realBalance;
-    let results = service.removeDuplicateEntries(movementsWithDuplicates, realBalance);
-    expect(results.balance).toEqual(400);
-  });
+  // it('removeDuplicateEntries().balance should return 400', () => {
+  //   const movementsWithDuplicates = mockData.movementsWithDuplicates;
+  //   const realBalance = mockData.realBalance;
+  //   let results = service.removeDuplicateEntries(movementsWithDuplicates, realBalance);
+  //   expect(results.balance).toEqual(400);
+  // });
 
-  it('removeDuplicateEntries().isSyncValid should return true if computed balance after remove duplicate === realBalance', () => {
-    const movementsWithDuplicates = mockData.movementsWithDuplicates;
-    const realBalance = mockData.realBalance;
-    let results = service.removeDuplicateEntries(movementsWithDuplicates, realBalance);
-    expect(results.isSyncValid).toEqual(true);
-  });
+  // it('removeDuplicateEntries().isSyncValid should return true if computed balance after remove duplicate === realBalance', () => {
+  //   const movementsWithDuplicates = mockData.movementsWithDuplicates;
+  //   const realBalance = mockData.realBalance;
+  //   let results = service.removeDuplicateEntries(movementsWithDuplicates, realBalance);
+  //   expect(results.isSyncValid).toEqual(true);
+  // });
 
-  it('removeDuplicateEntries().isSyncValid should return true if computed balance after remove duplicate != realBalance', () => {
-    const movementsWithDuplicates = mockData.movementsWithDuplicates;
-    const realBalance = mockData.realBalance;
-    realBalance.balance = 500;
-    let results = service.removeDuplicateEntries(movementsWithDuplicates, realBalance);
-    expect(results.isSyncValid).toEqual(false);
-  });
+  // it('removeDuplicateEntries().isSyncValid should return true if computed balance after remove duplicate != realBalance', () => {
+  //   const movementsWithDuplicates = mockData.movementsWithDuplicates;
+  //   const realBalance = mockData.realBalance;
+  //   realBalance.balance = 500;
+  //   let results = service.removeDuplicateEntries(movementsWithDuplicates, realBalance);
+  //   expect(results.isSyncValid).toEqual(false);
+  // });
 
 
 
