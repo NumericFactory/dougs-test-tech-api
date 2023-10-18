@@ -12,15 +12,17 @@ L'API permet de générer des données (mouvements bancaires synchronisés), et 
 Récupérer le répo, puis installer les dépendance et enfin lancer le serveur de développement.
 
 **Installation**
-`git clone https://github.com/NumericFactory/dougs-test-tech-api.git`
+```bash
+git clone https://github.com/NumericFactory/dougs-test-tech-api.git
+```
 
 **Puis, installer les dépendance**
 ```bash
-$ npm install
+npm install
 ```
 **Lancer le serveur en local**
 ```bash
-$ npm run start:dev
+npm run start:dev
 ```
 ---------------------
 
@@ -88,67 +90,26 @@ JSON
       "id": 9,
       "date": "2023-10-09T23:51:25.842Z",
       "wording": "paiement",
-      "amount": -308.73
+      "amount": 1000.00
     },
     {
       "id": 8,
       "date": "2023-10-09T11:00:54.851Z",
       "wording": "facture",
-      "amount": -279.62
+      "amount": -300.00
     },
     {
       "id": 7,
       "date": "2023-10-05T01:54:16.957Z",
       "wording": "retrait",
-      "amount": -193.29
+      "amount": -200.00
     },
-    {
-      "id": 6,
-      "date": "2023-09-23T18:31:38.608Z",
-      "wording": "paiement",
-      "amount": -311.9
-    },
-    {
-      "id": 5,
-      "date": "2023-09-17T17:28:28.267Z",
-      "wording": "Facture client payée",
-      "amount": 2919.07
-    },
-    {
-      "id": 4,
-      "date": "2023-09-12T22:43:16.818Z",
-      "wording": "dépôt",
-      "amount": -227.21
-    },
-    {
-      "id": 3,
-      "date": "2023-09-09T03:43:08.236Z",
-      "wording": "paiement",
-      "amount": -153.52
-    },
-    {
-      "id": 2,
-      "date": "2023-09-07T01:43:03.180Z",
-      "wording": "facture",
-      "amount": -306.13
-    },
-    {
-      "id": 1,
-      "date": "2023-09-02T21:05:13.350Z",
-      "wording": "Facture client payée",
-      "amount": 2243.57
-    }
   ],
   "bankStatements": [
     {
       "id": 2,
       "date": "2023-10-06T21:59:59.999Z",
-      "balance": 3970.59
-    },
-    {
-      "id": 1,
-      "date": "2023-09-06T21:59:59.999Z",
-      "balance": 2243.57
+      "balance": 500.00
     }
   ]
 }
