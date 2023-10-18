@@ -3,20 +3,19 @@
 ## API Validation de synchronisation bancaire
 
 ### Author
-- Author - [Frederic Lossignol](https://www.linkedin.com/in/flossignol/)
+- Auteur / Candidat - [Frederic Lossignol](https://www.linkedin.com/in/flossignol/)
 
 ### Description
-L'API permet de générer des données (mouvements bancaires synchronisés), et vérifier leur validitité par comparaison avec une source de vérité que sont les soldes des relevés bancaires
+L'API allow to generate de générer des données (mouvements bancaires synchronisés), et vérifier leur validité par comparaison avec une source de vérité que sont les soldes des relevés bancaires
 
 ## Instructions
-Récupérer le répo, puis installer les dépendance et enfin lancer le serveur de développement.
 
-**Installation**
+**Récupérer le projet**
 ```bash
 git clone https://github.com/NumericFactory/dougs-test-tech-api.git
 ```
 
-**Puis, installer les dépendance**
+**Puis, installer les dépendances**
 ```bash
 npm install
 ```
@@ -26,10 +25,10 @@ npm run start:dev
 ```
 ---------------------
 
-### Types des données 
+### Data types
 
-`Movement`  { id: number, date: Date, wording: String, amount: number }
-`BankStatement`  { id: number, date: Date, balance: number }
+- `Movement`  { id: number, date: Date, wording: String, amount: number }
+- `BankStatement`  { id: number, date: Date, balance: number }
 
 
 ### Base URL
@@ -50,14 +49,15 @@ Returns a an object of 2 data :
 
 #### Parameters
 
-**startAt** (optional, string)
+`startAt` (optional, string)
 the beginning date for movements generation. Default is `2023-01-01`
 
-**withMissing** (optional, boolean)
+`withDuplicate` (optional, boolean)
+if value is TRUE, the api return a Movement [ ] with 10 duplicate entries
+
+`withMissing` (optional, boolean)
 if value is TRUE, the api return a Movement [ ] with 5 missing entries
 
-**withDuplicate** (optional, boolean)
-if value is TRUE, the api return a Movement [ ] with 10 duplicate entries
 
 #### Response
 
@@ -88,35 +88,27 @@ JSON
   "movements": [
     {
       "id": 9,
-      "date": "2023-10-09T23:51:25.842Z",
+      "date": "2023-10-05T23:51:25.842Z",
       "wording": "paiement",
       "amount": 1000.00
     },
     {
       "id": 8,
-      "date": "2023-10-09T11:00:54.851Z",
+      "date": "2023-10-02T11:00:54.851Z",
       "wording": "facture",
       "amount": -300.00
-    },
-    {
-      "id": 7,
-      "date": "2023-10-05T01:54:16.957Z",
-      "wording": "retrait",
-      "amount": -200.00
     },
   ],
   "bankStatements": [
     {
       "id": 2,
       "date": "2023-10-06T21:59:59.999Z",
-      "balance": 500.00
+      "balance": 700.00
     }
   ]
 }
 
 ```
-
-
 
 ### Errors
 
@@ -128,7 +120,7 @@ This API uses the following error codes:
 ## Test
 ```bash
 # unit tests
-$ npm run test
+npm run test
 ```
 
 
