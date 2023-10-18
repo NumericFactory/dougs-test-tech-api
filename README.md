@@ -6,7 +6,7 @@
 - Auteur / Candidat - [Frederic Lossignol](https://www.linkedin.com/in/flossignol/)
 
 ### Description
-L'API allow to generate de générer des données (mouvements bancaires synchronisés), et vérifier leur validité par comparaison avec une source de vérité que sont les soldes des relevés bancaires
+L'API permet de générer des données (mouvements bancaires synchronisés), et de **vérifier leur validité** par comparaison avec une source de vérité que sont les soldes des relevés bancaires
 
 ## Instructions
 
@@ -117,8 +117,8 @@ JSON
 ### Errors
 
 This API uses the following error codes:
-400 Bad Request: The request was malformed or missing required parameters.
-500 Internal Server Error: An unexpected error occurred on the server.
+- `400 Bad Request`: The request was malformed or missing required parameters.
+- `500 Internal Server Error`: An unexpected error occurred on the server.
 
 [API doc](localhost:3000/api) Tester l'API sur Swagger.
 
@@ -140,7 +140,7 @@ This API uses the following error codes:
 
 
  
-#### GET /api/validate
+#### `GET /api/validate`
 
 Returns a 202 "Accepted" or a 418 error "I'm a teapot" (with reasons of error)
 
