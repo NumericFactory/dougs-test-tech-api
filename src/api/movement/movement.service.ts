@@ -24,20 +24,13 @@ export class MovementService {
      * @returns { message: 'Accepted' } | HttpException
      */
     isSyncValid(movements: Movement[], bankStatements: BankBalance[]): any {
-        let isSyncValid: boolean = false, startBalance: number = 0, periods: ResponseReason[] = [], totalAmountPerPeriod: number = 0;
+        let isSyncValid: boolean = false, startBalance: number = 0, totalAmountPerPeriod: number = 0;
+        let periods: ResponseReason[] = [];
 
         for (let i = bankStatements.length - 1; i >= 0; i--) {
-            let partialMovements: Movement[] = [];
-            if (i === bankStatements.length - 1) {
-                partialMovements = movements.filter(movement =>
-                    new Date(movement.date).getTime() < new Date(bankStatements[i].date).getTime());
-            } else {
-                partialMovements = movements.filter(movement =>
-                    new Date(movement.date).getTime() < new Date(bankStatements[i].date).getTime()
-                    && new Date(movement.date).getTime() >= new Date(bankStatements[i + 1]?.date).getTime());
-            }
-
+            let partialMovements: Movement[] = this.getPartialMovements(movements, bankStatements, i);
             totalAmountPerPeriod = (Math.round(partialMovements.reduce((total, item) => total + item.amount, startBalance) * 100)) / 100;
+
             isSyncValid = totalAmountPerPeriod === bankStatements[i].balance ? true : false;
             let isDuplicateEntriesFound = this.isDuplicateEntriesFound(partialMovements);
             let isMissingEntries = !isSyncValid && !isDuplicateEntriesFound ? true : false;
@@ -55,10 +48,32 @@ export class MovementService {
         }
 
         if (periods.some(period => period.isSyncValid === false)) {
-            throw new HttpException({ message: 'i\'m a teapot', reasons: periods }, 418); // [418]
+            throw new HttpException({ message: 'i\'m a teapot', reasons: periods }, 418); // [418] Error
         }
-
         return { message: 'Accepted' }; // [202] { message: 'Accepted' }    
+    }
+
+
+    /**
+     * function that returns partial movements, for each period 
+     * in bankStatements range of dates
+     * @param movements 
+     * @param bankStatements
+     * @param index 
+     * @returns { Movement[] }
+     */
+    private getPartialMovements(movements: Movement[], bankStatements: BankBalance[], index: number): Movement[] {
+        let partialMovements: Movement[] = [];
+        if (index === bankStatements.length - 1) {
+            partialMovements = movements.filter(movement =>
+                new Date(movement.date).getTime() < new Date(bankStatements[index].date).getTime());
+        } else {
+            partialMovements = movements.filter(movement =>
+                new Date(movement.date).getTime() < new Date(bankStatements[index].date).getTime()
+                && new Date(movement.date).getTime() >= new Date(bankStatements[index + 1]?.date).getTime());
+        }
+        return partialMovements;
+
     }
 
 
