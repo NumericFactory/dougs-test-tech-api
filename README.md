@@ -19,12 +19,12 @@ git clone https://github.com/NumericFactory/dougs-test-tech-api.git
 ```bash
 npm install
 ```
-**Lancer le serveur *(http://localhost:3000)* **
+**Lancer le serveur (http://localhost:3000) **
 ```bash
 npm run start:dev
 ```
 
-**Tester l'API sur Swagger *(http://localhost:3000/api)* **
+**Tester l'API sur Swagger (http://localhost:3000/api) **
 
 ---------------------
 
