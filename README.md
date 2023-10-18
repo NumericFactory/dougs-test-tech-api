@@ -40,7 +40,7 @@ http://localhost:3000/api
 The base URL for all API requests is : 
 `http://localhost:3000`
 
-### Endpoints
+### Endpoints 1/2
 
 #### `GET /data-from-sync`
 
@@ -120,7 +120,7 @@ This API uses the following error codes:
 - `400 Bad Request`: The request was malformed or missing required parameters.
 - `500 Internal Server Error`: An unexpected error occurred on the server.
 
-[API doc](localhost:3000/api) Tester l'API sur Swagger.
+[API doc localhost:3000/api](http://localhost:3000/api).
 
 
 -------------------
@@ -139,21 +139,19 @@ This API uses the following error codes:
 
 
 
- 
+### Endpoints 1/2
+
 #### `GET /api/validate`
 
 Returns a 202 "Accepted" or a 418 error "I'm a teapot" (with reasons of error)
 
 #### BODY Parameters
 
-`movements` (required, Movement[])
-An array of movements
+- `movements` (required, Movement[])
+  - An array of movements
 
-`bankStatements` (required, BankStatement[])
-An array of bank statements
-
-`withMissing` (optional, boolean)
-if value is TRUE, the api return a Movement [ ] with 5 missing entries
+- `bankStatements` (required, BankStatement[])
+  - An array of bank statements
 
 ### Querystring Parameters
 
@@ -162,7 +160,12 @@ if value is TRUE, the api return a Movement [ ] with 5 missing entries
 #### Response
 
 
+### Errors
 
+This API uses the following error codes:
+- `418 I'm a teapot!` : Api response if syncrhonization is not valid 
+- `400 Bad Request`: The request was malformed or missing required parameters.
+- `500 Internal Server Error`: An unexpected error occurred on the server.
 
 
 
