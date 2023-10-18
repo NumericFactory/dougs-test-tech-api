@@ -31,8 +31,8 @@ http://localhost:3000/api
 
 ### Data types
 
-- `Movement`  { id: number, date: Date, wording: String, amount: number }
-- `BankStatement`  { id: number, date: Date, balance: number }
+- `Movement`  { **id**: number, **date**: Date, **wording**: string, **amount**: number }
+- `BankStatement`  { **id**: number, **date**: Date, **balance**: number }
 
 
 ### Base URL
