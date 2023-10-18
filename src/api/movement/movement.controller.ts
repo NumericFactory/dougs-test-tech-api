@@ -2,7 +2,7 @@ import { Body, Query, Controller, Post, Get, HttpException, HttpStatus, HttpCode
 import { MovementService } from './movement.service';
 import { BankBalance, Movement } from './models/data.model';
 import { ApiResponse, ApiTags, ApiAcceptedResponse, ApiParam, ApiBody, ApiQuery } from '@nestjs/swagger';
-import { ErrorResponseWithReasons, Reason, Detail } from './models/response-with-reasons.model';
+import { ErrorResponseWithReasons, Reason } from './models/response-with-reasons.model';
 import { OkResponse } from './models/ok-response.model';
 
 @Controller('api/movements')

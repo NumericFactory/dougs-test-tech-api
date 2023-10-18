@@ -1,40 +1,49 @@
 import { ValidateNested, IsArray, IsObject, } from "class-validator";
 import { Type } from "class-transformer";
 import { ApiProperty } from "@nestjs/swagger";
-import { Movement } from "./data.model";
+
 /**
  * Type API ErrorResponseWithReasons
  **/
 export class ErrorResponseWithReasons {
     @ApiProperty({ example: 'I\'m a teapot' })
     message: string;
-    @ApiProperty({ example: [{ message: 'Duplicates entries were found and removed. Cleared uniqueMovements are in response.info', info: { removedDuplicatesEntries: 7, uniqueMovements: [{ id: 3, date: new Date('2023-10-06 15:30:00'), wording: 'Achat boulanger', amount: -119 }, { id: 4, date: new Date('2023-10-04 21:09:00'), wording: 'Facture client F021234', amount: 1230 }] } }] })
+
+    @ApiProperty({
+        example: {
+
+            "message": "i'm a teapot",
+            "reasons": [
+                {
+                    "date": "2023-10-06T21:59:59.999Z",
+                    "isSyncValid": true,
+                    "isduplicateEntriesFound": false,
+                    "isMissingEntries": false
+                },
+                {
+                    "date": "2023-09-06T21:59:59.999Z",
+                    "isSyncValid": true,
+                    "isduplicateEntriesFound": false,
+                    "isMissingEntries": false
+                },
+                {
+                    "date": "2023-08-06T21:59:59.999Z",
+                    "isSyncValid": true,
+                    "isduplicateEntriesFound": false,
+                    "isMissingEntries": false
+                }
+            ]
+        }
+    })
     reasons?: Reason[]
-    constructor(message: string, reasons: Reason[]) {
-        this.message = message;
-        this.reasons = [...reasons]
-    }
 }
 
-export class Reason {
-    @IsObject()
-    message: string;
-    info: Detail
-}
-
-export class Detail {
-    removedDuplicatesEntries: number;
-    uniqueMovements: Movement[];
-    computedBalance: number;
+export interface Reason {
+    date: Date;
     isSyncValid: boolean;
-    constructor(
-        removedDuplicatesEntries: number,
-        uniqueMovements: Movement[],
-        computedBalance: number,
-        isSyncValid: boolean) {
-        this.removedDuplicatesEntries = removedDuplicatesEntries;
-        this.uniqueMovements = [...uniqueMovements];
-        this.computedBalance = computedBalance;
-        this.isSyncValid = isSyncValid;
-    }
+    isduplicateEntriesFound: boolean;
+    isMissingEntries: boolean;
 }
+
+
+

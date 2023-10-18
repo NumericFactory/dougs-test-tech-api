@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { BankBalance, Movement } from './models/data.model';
 
-interface ResponseReason {
+export interface ResponseReason {
     date: Date;
     isSyncValid: boolean;
     isduplicateEntriesFound: boolean;
