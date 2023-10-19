@@ -12,16 +12,18 @@ export class FakeDataFromBankSyncController {
 
     /**
     * Function that generate fake random movements data and bank statements
-    * @queryParam withDuplicate - if true, add duplicate entries   
-    * @queryParam withMissing - if true, add missing entries   
+    * @queryParam withDuplicate - if true, push duplicate entries in movements[]  
+    * @queryParam withMissing - if true, delete one or more entries in movements[]   
     * @queryParam startAt - start date of movements 
     * @queryParam minPerMonth - minimum number of movements per month   
     * @queryParam maxPerMonth - maximum number of movements per month   
-    * @returns movementAndBankStatementDto  movements - simulated movements from scrapped source
+    * @returns movementAndBankStatementDto - { movements: Movement[], bankStatements: BankBalance[] }
    */
-    @ApiTags('Generate fake movements data')
-    @ApiResponse({ status: 200, description: 'Array of 12 months. Each Month contains a Movement Array' })
+    @ApiTags('Generate fake movements data and computed bank statements data')
+    @ApiResponse({ status: 200, description: 'Object with 2 properties : movements, bankStatements' })
+    @ApiResponse({ status: 400, description: 'Bad Request' })
     @ApiResponse({ status: 500, description: 'Server error' })
+
     @Get()
     getFakeData(
         @Query() queryParams: GetDataQueryParams

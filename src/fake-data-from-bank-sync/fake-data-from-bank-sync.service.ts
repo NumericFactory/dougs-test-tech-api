@@ -34,7 +34,6 @@ export class FakeDataFromBankSyncService {
         return this.fakeDataRepository.getMovementsWithMissingFromBankServiceSync(movements, numberEntriesToDelete)
     }
 
-
     /**
      * function that return computed bank statements balance from movements
      * @param movements 

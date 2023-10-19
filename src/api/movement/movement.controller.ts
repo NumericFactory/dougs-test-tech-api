@@ -1,8 +1,7 @@
-import { Body, Query, Controller, Post, Get, HttpException, HttpStatus, HttpCode } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { MovementService } from './movement.service';
-import { BankBalance, Movement } from './models/data.model';
-import { ApiResponse, ApiTags, ApiAcceptedResponse, ApiParam, ApiBody, ApiQuery } from '@nestjs/swagger';
-import { ErrorResponseWithReasons, Reason } from './models/response-with-reasons.model';
+import { ApiResponse, ApiTags, ApiAcceptedResponse } from '@nestjs/swagger';
+import { ErrorResponseWithReasons } from './models/response-with-reasons.model';
 import { OkResponse } from './models/ok-response.model';
 import { movementAndBankStatementDto } from './dto/dto';
 
@@ -20,9 +19,9 @@ export class MovementController {
     isSyncValid(
         @Body() data: movementAndBankStatementDto,
         // @Query('removeDuplicateEntries') removeDuplicateEntries: boolean
-    ) {
+    ): OkResponse | ErrorResponseWithReasons {
         try {
-            return this.movementSvc.isSyncValid(data['movements'], data['bankStatements']);
+            return this.movementSvc.isSyncValid(data.movements, data.bankStatements);
         }
         catch (error) {
             console.log('error isSync', error);
