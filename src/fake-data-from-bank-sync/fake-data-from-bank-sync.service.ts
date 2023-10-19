@@ -2,13 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { BankBalance, Movement } from '../api/movement/models/data.model';
 import { FakeDataRepository } from './repository/fake-data.repository';
 
-interface RemoveDuplicatedReturn {
-    duplicateEntriesWereCleared: number;
-    uniqueMovements: Movement[];
-    balance: number;
-    isSyncValid: boolean;
-}
-
 @Injectable()
 export class FakeDataFromBankSyncService {
 

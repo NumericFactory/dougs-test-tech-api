@@ -1,8 +1,4 @@
-import { Req } from "@nestjs/common";
 import { ApiProperty } from "@nestjs/swagger";
-import { Type } from "class-transformer";
-import { IsBoolean, IsInt, IsString, isBooleanString } from "class-validator";
-import { type } from "os";
 
 export class GetDataQueryParams {
     @ApiProperty({ example: false, required: false })

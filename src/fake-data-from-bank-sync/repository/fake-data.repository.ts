@@ -9,7 +9,6 @@ export class FakeDataRepository {
 
     getMovementsFromBankServiceSync(startDateStr: string, minNumOfDatesPerMonth?: number, maxNumOfDatesPerMonth?: number): Movement[] {
         return fakeData.generateMovements(startDateStr, minNumOfDatesPerMonth, maxNumOfDatesPerMonth);
-
     }
 
     getMovementsWithDuplicateFromBankServiceSync(movements: Movement[]): Movement[] {
