@@ -203,4 +203,4 @@ This API uses the following error codes:
 ### Tester l'API sur Swagger
 [localhost:3000/api](http://localhost:3000/api)
 
-![Dougs test tech - Frederic Lossginol](https://github.com/NumericFactory/dougs-test-tech/blob/main/capture-swagger.png?raw=true)
+![Dougs test tech - Frederic Lossginol](https://github.com/NumericFactory/dougs-test-tech-api/blob/main/capture-swagger.png?raw=true)
