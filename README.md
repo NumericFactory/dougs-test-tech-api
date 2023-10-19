@@ -24,6 +24,12 @@ npm install
 npm run start:dev
 ```
 
+## Lancer les tests unitaires
+```bash
+# unit tests
+npm run test
+```
+
 **Tester l'API sur Swagger**
 http://localhost:3000/api
 
@@ -191,17 +197,8 @@ This API uses the following error codes:
   }
 }
 ```
-
 - `400 Bad Request`: The request was malformed or missing required parameters.
 - `500 Internal Server Error`: An unexpected error occurred on the server.
 
 ### Tester l'API sur Swagger
 [localhost:3000/api](http://localhost:3000/api)
-
-
-
-## Test
-```bash
-# unit tests
-npm run test
-```

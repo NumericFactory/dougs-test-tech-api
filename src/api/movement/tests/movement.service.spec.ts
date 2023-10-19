@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MovementService } from '../movement.service';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 describe('MovementService', () => {
   let service: MovementService;
@@ -12,14 +13,18 @@ describe('MovementService', () => {
     }).compile();
     service = module.get<MovementService>(MovementService);
     // mock data
-    mockData = {
-      movementsWithDuplicates: [
-        { id: 1, date: new Date('2023-10-06'), wording: 'Facture client payée', amount: 1000 },
-        { id: 2, date: new Date('2023-10-13'), wording: 'Facture EDF', amount: -600 },
-        { id: 3, date: new Date('2023-10-06'), wording: 'Facture client payée', amount: 1000 },
-        { id: 4, date: new Date('2023-10-13'), wording: 'Facture EDF', amount: -600 },
+    mockData =
+    {
+      movements: [
+        { id: 4, date: "2023-10-25T17:54:20.298Z", wording: "facture", amount: -214.11 },
+        { id: 3, date: "2023-10-10T12:15:37.115Z", wording: "facture", amount: -214.43 },
+        { id: 2, date: "2023-09-06T15:25:49.361Z", wording: "dépôt", amount: -279.52 },
+        { id: 1, date: "2023-08-14T00:19:52.642Z", wording: "retrait", amount: -259.17 }
       ],
-      realBalance: { date: new Date('2023-10-15'), balance: 400 }
+      bankStatements: [
+        { id: 2, date: "2023-10-06T21:59:59.999Z", balance: -538.69 },
+        { id: 1, date: "2023-09-06T21:59:59.999Z", balance: -538.69 }
+      ]
     }
   });
 
@@ -27,36 +32,41 @@ describe('MovementService', () => {
     expect(service).toBeDefined();
   });
 
-  // it('removeDuplicateEntries().uniqueMovements should return an array without duplicate entries', () => {
-  //   const movementsWithDuplicates = mockData.movementsWithDuplicates;
-  //   const realBalance = mockData.realBalance;
-  //   let results = service.removeDuplicateEntries(movementsWithDuplicates, realBalance);
-  //   expect(results.uniqueMovements.length).toEqual(2);
-  //   expect(results.duplicateEntriesWereCleared).toEqual(2);
-  // });
+  it('isSyncValid() should return {message:"Accepted"}', () => {
+    let response = service.isSyncValid(mockData.movements, mockData.bankStatements);
+    expect(response).toBeDefined();
+    expect(response).toHaveProperty('message'); // OkResponse
+    expect(response.message).toBe('Accepted');
+  })
 
-  // it('removeDuplicateEntries().balance should return 400', () => {
-  //   const movementsWithDuplicates = mockData.movementsWithDuplicates;
-  //   const realBalance = mockData.realBalance;
-  //   let results = service.removeDuplicateEntries(movementsWithDuplicates, realBalance);
-  //   expect(results.balance).toEqual(400);
-  // });
+  it('isSyncValid() should return {message:"I\'m a teapot"} if duplicate entries', () => {
+    let movementsWithDuplicateEntries = [...mockData.movements, mockData.movements[3]];
+    let hasThrown = false;
+    try {
+      let response = service.isSyncValid(movementsWithDuplicateEntries, mockData.bankStatements);
+    } catch (error) {
+      hasThrown = true;
+      expect(error).toBeInstanceOf(HttpException);
+      expect((error as HttpException).getStatus()).toBe(HttpStatus.I_AM_A_TEAPOT);
+      expect((error as HttpException).getResponse()).toHaveProperty('message');
+      expect((error as HttpException).getResponse()).toHaveProperty('reasons');
+    }
+    expect(hasThrown).toBe(true);
+  })
 
-  // it('removeDuplicateEntries().isSyncValid should return true if computed balance after remove duplicate === realBalance', () => {
-  //   const movementsWithDuplicates = mockData.movementsWithDuplicates;
-  //   const realBalance = mockData.realBalance;
-  //   let results = service.removeDuplicateEntries(movementsWithDuplicates, realBalance);
-  //   expect(results.isSyncValid).toEqual(true);
-  // });
-
-  // it('removeDuplicateEntries().isSyncValid should return true if computed balance after remove duplicate != realBalance', () => {
-  //   const movementsWithDuplicates = mockData.movementsWithDuplicates;
-  //   const realBalance = mockData.realBalance;
-  //   realBalance.balance = 500;
-  //   let results = service.removeDuplicateEntries(movementsWithDuplicates, realBalance);
-  //   expect(results.isSyncValid).toEqual(false);
-  // });
-
-
+  it('isSyncValid() should return {message:"I\'m a teapot"} if missing entries', () => {
+    let movementsWithMissingEntries = mockData.movements.filter(movement => movement.id !== 1);
+    let hasThrown = false;
+    try {
+      let response = service.isSyncValid(movementsWithMissingEntries, mockData.bankStatements);
+    } catch (error) {
+      hasThrown = true;
+      expect(error).toBeInstanceOf(HttpException);
+      expect((error as HttpException).getStatus()).toBe(HttpStatus.I_AM_A_TEAPOT);
+      expect((error as HttpException).getResponse()).toHaveProperty('message');
+      expect((error as HttpException).getResponse()).toHaveProperty('reasons');
+    }
+    expect(hasThrown).toBe(true);
+  })
 
 });

@@ -13,23 +13,14 @@ describe('FakeDataFromBankSyncService', () => {
         }).compile();
         service = module.get<FakeDataFromBankSyncService>(FakeDataFromBankSyncService);
         // mock data
-        mockData = {
-            movementsWithDuplicates: [
-                { id: 1, date: new Date('2023-10-06'), wording: 'Facture client payée', amount: 1000 },
-                { id: 2, date: new Date('2023-10-13'), wording: 'Facture EDF', amount: -600 },
-                { id: 3, date: new Date('2023-10-06'), wording: 'Facture client payée', amount: 1000 },
-                { id: 4, date: new Date('2023-10-13'), wording: 'Facture EDF', amount: -600 },
-            ],
-            realBalance: { date: new Date('2023-10-15'), balance: 400 }
-        }
     });
 
     it('should be defined', () => {
         expect(service).toBeDefined();
     });
 
-    it('getFakeDataMovements() should generate Array of 12 <Movement[]>', () => {
-        let movements = service.getFakeDataMovements('2023-06-01');
+    it('getFakeDataMovements() should generate Array Movement[]>', () => {
+        let movements = service.getFakeDataMovements('2023-08-01');
         expect(movements).toBeInstanceOf(Array);
         expect(movements[0]).toHaveProperty('id');
         expect(movements[0]).toHaveProperty('date');
@@ -38,7 +29,7 @@ describe('FakeDataFromBankSyncService', () => {
     });
 
     it('getFakeDataMovementsWithDuplicate() should generate Array of 12 <Movement[]>', () => {
-        let movements = service.getFakeDataMovements('2023-06-01');
+        let movements = service.getFakeDataMovements('2023-08-01');
         expect(movements).toBeInstanceOf(Array);
     });
 

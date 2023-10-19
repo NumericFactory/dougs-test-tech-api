@@ -1,5 +1,4 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { MovementsDto } from "../dto/movements-by-month.dto";
 /**************************************
  * TYPE DATA - Movement and BankBalance
  **************************************

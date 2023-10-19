@@ -23,14 +23,12 @@ export function generateRandomDatesArray(startDate?: string, minNumOfDatesPerMon
             minNumOfDatesPerMonth ? minNumOfDatesPerMonth : 3,
             maxNumOfDatesPerMonth ? maxNumOfDatesPerMonth : 8);
         for (let i = 1; i <= numOfDatesPerMonth; i++) {
-            console.log('start.toDate() exec', start.toDate())
             const randomDate = faker.date.between({ from: Number(start.toDate().setDate(1)), to: Number(start.toDate().setDate(28)) });
             randomDates.push(randomDate);
         }
         start.add(1, 'month');
     }
     // sort dates in descending order
-    console.log('RandomDates', randomDates)
     if (randomDates.length > 1) {
         randomDates.sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
     }

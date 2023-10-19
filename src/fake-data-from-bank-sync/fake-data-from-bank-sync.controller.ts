@@ -1,9 +1,9 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { FakeDataFromBankSyncService } from './fake-data-from-bank-sync.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { BankBalance, Movement } from 'src/api/movement/models/data.model';
+import { Movement } from 'src/api/movement/models/data.model';
 import { GetDataQueryParams } from './models/get-data-query';
-import { movementAndBankStatementDto } from 'src/api/movement/dto/dto';
+import { movementAndBankStatementDto } from '../api/movement/dto/dto';
 
 @Controller('getdata-from-bank-sync')
 export class FakeDataFromBankSyncController {
