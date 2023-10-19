@@ -141,7 +141,7 @@ This API uses the following error codes:
 
 ### Endpoints 2/2
 
-#### `POST /api/validate`
+#### `POST /api/movements/validate`
 
 Returns a 202 "Accepted" or a 418 error "I'm a teapot" (with reasons of error)
 
@@ -160,7 +160,7 @@ if TRUE, the API removed duplicates movement before, and verify if synchronizati
 #### Example
 
 **Request** :
-POST /api/validation
+POST /api/movements/validation
 
 #### Response
 - `202 {message : Accepted!}` : Api response if syncrhonization is valid
@@ -202,3 +202,5 @@ This API uses the following error codes:
 
 ### Tester l'API sur Swagger
 [localhost:3000/api](http://localhost:3000/api)
+
+![Dougs test tech - Frederic Lossginol](https://github.com/NumericFactory/dougs-test-tech/blob/main/capture-swagger.png?raw=true)
